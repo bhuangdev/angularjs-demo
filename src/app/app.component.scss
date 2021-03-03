@@ -1,0 +1,241 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 8px 0;
+}
+
+p {
+    margin: 0;
+}
+
+
+.content {
+    display: flex;
+    margin: 70px auto 32px;
+    padding: 0 16px;
+    max-width: 960px;
+    flex-direction: column;
+    align-items: center;
+    min-height: 85vh;
+}
+
+a,
+a:visited,
+a:hover {
+    color: #1976d2;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #125699;
+}
+
+
+footer {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    line-height: 20px;
+}
+
+footer a {
+    display: flex;
+    align-items: center;
+}
+
+
+/* Responsive Styles */
+@media screen and (max-width: 767px) {
+
+}
+
+@media screen and (max-width: 575px) {
+    
+}
+
+#mainContent{
+    width:140%;
+    flex: 1;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+#left{
+    border:1px solid #999;
+    margin:10px 5px 10px 10px;
+    border-radius: 6px;
+}
+#right{
+    border:1px solid #999;
+    margin:10px 10px 10px 5px;
+    border-radius: 4px;
+}
+.Grid {
+    display: flex;
+}
+.Grid-cell {
+    flex: 1;
+}
+.Grid-cell.u-1of1 {
+    flex: 0 0 20%;
+}
+.left-top{
+    height:8%;
+    border-bottom:1px solid #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size:25px;
+    font-family: 'Nunito Sans Bold', 'Nunito Sans', sans-serif;
+}
+.left-bottom{
+    overflow: auto;
+    height:680px;
+    margin-left:-10px;
+}
+.right-top{
+    height:8%;
+    border-bottom:1px solid #999;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+#closeAllBtn{
+    margin:0 15px 10px 0;
+    width: 12rem;
+}
+
+section {
+    background-color: lightyellow;
+}
+
+  
+.btn {
+	border: none;
+	background: none;
+	font-family: 'Nunito Sans Bold', 'Nunito Sans', sans-serif;
+	font-size: 1.1rem;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	border-radius: 4px;
+	box-shadow: none;
+	height: 2.6rem;
+    width: 13rem;
+	-moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.12);
+	-webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.12);
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.12);
+	/* remove the bottom 2 after we setup buttons in large medium small sizes */
+	padding: 0 2.2rem;
+	text-align: center;
+    margin:10px 0 5px 30px;
+}
+
+.btn.primary {
+	background: rgb(108, 139, 233);
+	color: #fff;
+}
+
+
+.btn.primary:hover,
+.btn.primary:active,
+.btn.primary:focus {
+	background: rgb(74, 103, 231);
+}
+
+.btn.primary[disabled],
+.btn.primary[disabled]:hover,
+.btn.primary[disabled]:focus {
+	background: rgba(215, 221, 242, 1);
+	color: #7C94C4;
+	opacity: 1;
+	cursor: default;
+}
+
+.btn.tertiary {
+	background: rgba(49, 173, 121, 1);
+	color: #fff;
+    width: 12rem;
+    margin-left:45px;
+    text-align: left;
+}
+
+.btn.tertiary:hover,
+.btn.tertiary:active,
+.btn.tertiary:focus {
+	background: rgba(16, 136, 86, 1);
+}
+
+.btn.tertiary[disabled],
+.btn.tertiary[disabled]:hover,
+.btn.tertiary[disabled]:focus {
+	background: rgba(215, 221, 242, 1);
+	color: #7C94C4;
+	opacity: 1;
+	cursor: default;
+}
+
+.right-bottom{
+    display: flex;
+}
+#bos-tabs{
+    margin:10px 0 0 10px;
+    width:98%;
+    height:685px;
+}
+.new-tab{
+    border-bottom:1px solid #dee2e6;
+    border-left:1px solid #dee2e6;
+    border-right:1px solid #dee2e6;
+    height:625px;
+}
+
+.tab-content-one{
+    margin:0 0 0 0;
+    height:6%;
+    display: flex;
+    align-items: center;
+}
+.tab-content-two{
+    margin:0 0 0 0;
+    border-top:1px solid #dee2e6;
+    height:44%;
+}
+.tab-content-three{
+    margin:0 0 0 0;
+    border-top:1px solid #dee2e6;
+    height:6%;
+    display: flex;
+    align-items: center;
+}
+.tab-content-four{
+    margin:0 0 0 0;
+    border-top:1px solid #dee2e6;
+    height:44%;
+}
+.content-two-top{
+    margin:5px 10px 5px 10px;
+    border:1px solid #000;
+    height:80%;
+    overflow: auto;
+}
+.content-two-bottom{
+    margin:5px 10px 10px 10px;
+    height:15%;  
+    display: flex;
+    align-items: center;
+}
+.content-four-top{
+    margin:5px 10px 5px 10px;
+    border:1px solid #000;
+    height:75%;
+}
+.content-four-bottom{
+    margin:5px 10px 10px 10px;
+    border:1px solid #000;
+    height:20%;
+}

@@ -1,0 +1,78 @@
+<div class="content" role="main">
+  <!-- main -->
+  <div class="Grid" id="mainContent">
+    <div class="Grid-cell u-1of1" id="left">
+      <div class="left-top">
+        MENU
+      </div>
+      <div class="left-bottom">
+        <button type="button" class="btn primary" (click)="addTab()">+ New Query</button>
+        <button type="button" class="btn primary" (click)="show2level()">Shared Queries</button>
+        <button type="button" class="btn tertiary" (click)="onShow()" *ngIf="twolevelshow">
+          <p style="margin-left:-25px;">2020 Print 1099-MISC</p>
+        </button>
+        <button type="button" class="btn primary" (click)="queryShow()">Print Queries</button>
+        <button type="button" class="btn primary" (click)="queryShow()">ACA Transmittals...</button>
+        <button type="button" class="btn primary" (click)="queryShow()">State Transmittals...</button>
+        <button type="button" class="btn primary" (click)="queryShow()">Other Queries</button>
+        <button type="button" class="btn primary" (click)="queryShow()">My Queries</button>
+        <button type="button" class="btn primary" (click)="showVof()">View ORF Files</button>
+        <button type="button" class="btn primary" (click)="showSb()">Submit Batches</button>
+        <button type="button" class="btn primary" (click)="showVb()">Accept Batches</button>
+        <button type="button" class="btn primary" (click)="showRb()">Reject Batches</button>
+        <button type="button" class="btn primary" (click)="querynotShow()">Applications Settings</button>
+        <button type="button" class="btn primary" (click)="querynotShow()">Transmitter Settings</button>
+      </div>
+    </div>
+    <div class="Grid-cell" id="right">
+      <div class="right-top">
+        <button type="button" class="btn primary" id="closeAllBtn" (click)="closeAllTabs()">Close All Tabs</button>
+      </div>
+      <div class="right-bottom">
+        <tabset id="bos-tabs" *ngIf="tabShowState">
+          <tab heading="New Query 1*" class="new-tab" id="NewQuery1" (selectTab)="changeRoute()">
+            <div class="tab-content-one">
+              <p style="font-weight: bold;margin-left:10px;">New Query1</p>
+            </div>
+            <div class="tab-content-two">
+              <div class="content-two-top">条件</div>
+              <div class="content-two-bottom">
+                <p style="text-decoration: underline;margin-left:10px;">Save Query</p>
+              </div>
+            </div>
+            <div class="tab-content-three">
+              <p style="font-weight: bold;margin-left:10px;">Results</p>
+            </div>
+            <div class="tab-content-four">
+              <div class="content-four-top">表格</div>
+              <div class="content-four-bottom">按钮</div>
+            </div>
+          </tab>
+          <tab heading="New Query 2*" class="new-tab" id="NewQuery2" (selectTab)="changeRoute()" *ngIf="tab2ShowState">
+
+          </tab>
+          <tab heading="View ORF Files" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="vofShowState">
+            
+          </tab>
+          <tab heading="Submit Batches" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="sbShowState">
+            
+          </tab>
+          <tab heading="Accept Batches" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="abShowState">
+            
+          </tab>
+          <tab heading="Reject Batches" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="rbShowState">
+            
+          </tab>
+        </tabset>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+      © 2021 NL Powered by HB  
+  </footer>
+
+</div>
+
+<router-outlet></router-outlet>
