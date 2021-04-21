@@ -3,67 +3,923 @@
   <div class="Grid" id="mainContent">
     <div class="Grid-cell u-1of1" id="left">
       <div class="left-top">
-        MENU
+        MENU eFile Dev
       </div>
       <div class="left-bottom">
         <button type="button" class="btn primary" (click)="addTab()">+ New Query</button>
-        <button type="button" class="btn primary" (click)="show2level()">Shared Queries</button>
-        <button type="button" class="btn tertiary" (click)="onShow()" *ngIf="twolevelshow">
-          <p style="margin-left:-25px;">2020 Print 1099-MISC</p>
-        </button>
-        <button type="button" class="btn primary" (click)="queryShow()">Print Queries</button>
-        <button type="button" class="btn primary" (click)="queryShow()">ACA Transmittals...</button>
-        <button type="button" class="btn primary" (click)="queryShow()">State Transmittals...</button>
-        <button type="button" class="btn primary" (click)="queryShow()">Other Queries</button>
-        <button type="button" class="btn primary" (click)="queryShow()">My Queries</button>
+        <button type="button" class="btn primary" (click)="sharedshow2level()" >Shared Queries</button>
+        <ng-container *ngFor="let sqbtn of sqBtnGroup" class="sharedQueriesContent">
+          <button 
+            type="button" class="btn tertiary" (click)="onShow()" *ngIf="sharedtwolevelshow">
+            <p style="margin-left:-25px;">
+              {{sqbtn?.content}}
+            </p>
+          </button>
+        </ng-container>
+        <button type="button" class="btn primary" (click)="printshow2level()">Print Queries</button>
+        <ng-container *ngFor="let printbtn of printBtnGroup" class="printQueriesContent">
+          <button type="button" class="btn tertiary" (click)="onShow()" *ngIf="printtwolevelshow">
+            <p style="margin-left:-25px;">
+              {{printbtn?.content}}
+            </p>
+          </button>
+        </ng-container>
+        <button type="button" class="btn primary" (click)="acashow2level()">ACA Transmittals...</button>
+        <ng-container *ngFor="let acabtn of acaBtnGroup"  class="acaQueriesContent">
+          <button type="button" class="btn tertiary" (click)="onShow()" *ngIf="acatwolevelshow">
+            <p style="margin-left:-25px;">
+              {{acabtn?.content}}
+            </p>
+          </button>
+        </ng-container>
+        <button type="button" class="btn primary" (click)="stateshow2level()">State Transmittals...</button>
+        <ng-container *ngFor="let statebtn of stateBtnGroup"  class="stateQueriesContent">
+          <button type="button" class="btn tertiary" (click)="onShow()" *ngIf="statetwolevelshow">
+            <p style="margin-left:-25px;">
+              {{statebtn?.content}}
+            </p>
+          </button>
+        </ng-container>
+        <button type="button" class="btn primary" (click)="othershow2level()">Other Queries</button>
+        <ng-container *ngFor="let otherbtn of otherBtnGroup"  class="otherQueriesContent">
+          <button type="button" class="btn tertiary" (click)="onShow()" *ngIf="othertwolevelshow">
+            <p style="margin-left:-25px;">
+              {{otherbtn?.content}}
+            </p>
+          </button>
+        </ng-container>
+        <button type="button" class="btn primary" (click)="myshow2level()">My Queries</button>
+        <ng-container *ngFor="let mybtn of myBtnGroup"  class="myQueriesContent">
+          <button type="button" class="btn tertiary" (click)="onShow()" *ngIf="mytwolevelshow">
+            <p style="margin-left:-25px;">
+              {{mybtn?.content}}
+            </p>
+          </button>
+        </ng-container>
         <button type="button" class="btn primary" (click)="showVof()">View ORF Files</button>
         <button type="button" class="btn primary" (click)="showSb()">Submit Batches</button>
         <button type="button" class="btn primary" (click)="showVb()">Accept Batches</button>
         <button type="button" class="btn primary" (click)="showRb()">Reject Batches</button>
-        <button type="button" class="btn primary" (click)="querynotShow()">Applications Settings</button>
-        <button type="button" class="btn primary" (click)="querynotShow()">Transmitter Settings</button>
+        <button type="button" class="btn primary" (click)="appSetShow()">Applications Settings</button>
+        <button type="button" class="btn primary" (click)="tranSetShow()">Transmitter Settings</button>
       </div>
     </div>
-    <div class="Grid-cell" id="right">
+    <div class="Grid-cell" id="right" *ngIf="rightShowState">
       <div class="right-top">
         <button type="button" class="btn primary" id="closeAllBtn" (click)="closeAllTabs()">Close All Tabs</button>
       </div>
       <div class="right-bottom">
         <tabset id="bos-tabs" *ngIf="tabShowState">
-          <tab heading="New Query 1*" class="new-tab" id="NewQuery1" (selectTab)="changeRoute()">
+          <tab heading="New Query 1*" class="new-tab" [active]="true" [removable]="true" id="newQueryTabContent">
             <div class="tab-content-one">
               <p style="font-weight: bold;margin-left:10px;">New Query1</p>
             </div>
             <div class="tab-content-two">
-              <div class="content-two-top">条件</div>
+              <div class="content-two-top">
+                <div class="content-two-top-top">
+                  <div class="btn-group" dropdown>
+                    <button id="button-basic-small" dropdownToggle type="button" class="btn dropdown-toggle"
+                      aria-controls="dropdown-basic">
+                    </button>
+                    <ul id="dropdown-basic-small" *dropdownMenu class="dropdown-menu"
+                        role="menu" aria-labelledby="button-basic">
+                      <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="addNewCon()">Add new condition</a></li>
+                      <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="openNewBracket()">Open a new bracket</a></li>
+                    </ul>
+                  </div>
+                  <div style="margin-left:10px;">
+                    <span>Select records where </span>
+                    <span dropdown container="body">
+                      <a href id="basic-link" dropdownToggle (click)="false"
+                         aria-controls="basic-link-dropdown" style="text-decoration: underline;">{{ allState }}</a>
+                      <ul id="basic-link-dropdown-all" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="basic-link">
+                        <li *ngFor="let choice of allItems">
+                          <a class="dropdown-item" href="javascript:void(0)" (click)="changeAllState(choice)">{{choice}}</a>
+                        </li>
+                      </ul>
+                    </span>
+                    <span> of the following succeed</span>
+                  </div>
+                </div>
+                <div class="content-two-top-content" *ngFor="let coni of conditionItems">
+                  <div class="conditionUp" *ngIf="coni.upConditionUpShow">
+                    <input class="isConditionCheckbox" type="checkbox" id="isConditionCheck" name="isConditionCheck"
+                    (change)="isConditionCheck">
+                    <div class="btn-group" dropdown container="body">
+                      <button id="button-basic-num-small" dropdownToggle type="button"
+                        aria-controls="dropdown-basic"><p style="margin:-5px 3px 10px -2px;font-size:12px;">{{ coni.no }}</p>
+                      </button>
+                      <ul id="dropdown-basic-small-no" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="button-basic">
+                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="addNewCon()">Add a new condition into the current predicate</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Add a new condition after the current predicate</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Open a new bracket</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Delete(including all sub-conditions)</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Move up</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Move down</a></li>
+                      </ul>
+                    </div>
+                    <span dropdown container="body">
+                      <a href id="basic-link" dropdownToggle (click)="false"
+                         aria-controls="basic-link-dropdown" style="text-decoration: underline;">{{ allState }}</a>
+                      <ul id="basic-link-dropdown-all" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="basic-link">
+                        <li *ngFor="let choice of allItems">
+                          <a class="dropdown-item" href="javascript:void(0)" (click)="changeAllState(choice)">{{choice}}</a>
+                        </li>
+                      </ul>
+                    </span>
+                    &nbsp;of the following succeed
+                  </div>
+                  <div class="condition">
+                    <div *ngIf="coni.upConditionUpShow" style="margin-left:30px;"></div>
+                    <input class="isConditionCheckbox" type="checkbox" id="isConditionCheck" name="isConditionCheck"
+                    (change)="isConditionCheck">
+                    <div class="btn-group" dropdown container="body">
+                      <button id="button-basic-num-small" dropdownToggle type="button"
+                        aria-controls="dropdown-basic"><p style="margin:-5px 3px 10px -2px;font-size:12px;">{{ coni.upConditionUpShow == false ? coni.no : conditionItems[coni.no - 1].no + '.' + coni.no }}</p>
+                      </button>
+                      <ul id="dropdown-basic-small-no" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="button-basic">
+                        <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="addNewCon()">Add new condition</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Open a new bracket</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Delete(including all sub-conditions)</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Move up</a></li>
+                        <li role="menuitem"><a class="dropdown-item" href="#">Move down</a></li>
+                      </ul>
+                    </div>
+                    <span dropdown container="body">
+                      <div class="btn-group" dropdown [autoClose]="true" container="body">
+                        <a href id="basic-link" dropdownToggle (click)="false" style="text-decoration: underline;"
+                                aria-controls="dropdown-nested">
+                                {{ coni.condition1 }}&nbsp;&nbsp;
+                        </a>
+                        <ul id="dropdown-nested" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-nested">
+                          <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body" *ngFor="let choice of clickItems">
+                            <a dropdownToggle class="dropdown-item dropdown-toggle"
+                               (click)="false">{{choice.level1}}<span class="caret"></span></a>
+                            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                              <li role="menuitem"  *ngFor="let next of choice.level2"><a class="dropdown-item" href="javascript:void(0)" (click)="changeCondition1(coni.no,choice.level1,next)">{{ next }}</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </span>
+                    <span dropdown container="body" style="margin-top:2px;">
+                      <a href id="basic-link" dropdownToggle (click)="false"
+                         aria-controls="basic-link-dropdown" style="text-decoration: underline;">{{ coni.condition2 }}&nbsp;&nbsp;</a>
+                      <ul id="basic-link-dropdown-con2" *dropdownMenu class="dropdown-menu"
+                          role="menu" aria-labelledby="basic-link">
+                        <li *ngFor="let choice of con2Items">
+                          <a class="dropdown-item" href="javascript:void(0)" (click)="changeStartsWithState(coni.no,choice)">{{choice}}</a>
+                        </li>
+                      </ul>
+                    </span>
+                    <input id="clickhere2" name="clickhere" class="clickhere"  style="text-decoration: underline;" value="[click here]" (ngModel)="coni.condition3" />
+                  </div>
+                </div>
+                <div class="content-two-top-bottom">
+                  <div class="btn-group" dropdown [autoClose]="true" container="body">
+                    <a href id="basic-link" dropdownToggle (click)="false"
+                            aria-controls="dropdown-nested">
+                            [Click here to add a new condition]
+                    </a>
+                    <ul id="dropdown-nested" *dropdownMenu class="dropdown-menu"
+                        role="menu" aria-labelledby="button-nested">
+                      <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body" *ngFor="let choice of clickItems">
+                        <a dropdownToggle class="dropdown-item dropdown-toggle"
+                           (click)="false">{{choice.level1}}<span class="caret"></span></a>
+                        <ul *dropdownMenu class="dropdown-menu" role="menu">
+                          <li role="menuitem"  *ngFor="let next of choice.level2"><a class="dropdown-item" href="javascript:void(0)" (click)="changeClickAddNewCon(choice.level1,next)">{{ next }}</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
               <div class="content-two-bottom">
-                <p style="text-decoration: underline;margin-left:10px;">Save Query</p>
+                <div class="saveChange" *ngIf="saveShow">
+                  <a href="javascript:void(0)" (click)="saveQuery(template)">
+                    <p style="text-decoration: underline;">Save Query</p>
+                  </a>
+                </div>
+                <div class="editChange" *ngIf="editShow">
+                  <a href="javascript:void(0)" (click)="updateQuery(template)">
+                    <p style="text-decoration: underline;">Update Query</p>
+                  </a>
+                  <a href="javascript:void(0)" (click)="deleteQuery(template)">
+                    <p style="text-decoration: underline;">Delete Query</p>
+                  </a>
+                </div>
+                <div style="float:right">
+                  <button type="button" class="btn middle" id="refreshBtn" (click)="refreshTable()">Refresh</button>
+                  <input class="isPrintCheckbox" type="checkbox" id="isPrint" name="isPrint"
+                    (change)="isPrintCheck">
+                  <label class="iPlabel" for="isPrint"><span>Is Print Only</span></label>
+                  <input class="inputNum" type="number" name="points" min="0" />
+                  <button type="button" class="btn middle" id="outputBtn" (click)="outputTable()">Output</button>
+                </div>
               </div>
             </div>
             <div class="tab-content-three">
               <p style="font-weight: bold;margin-left:10px;">Results</p>
+              <div class="resultCount" *ngIf="resultCountShowState">{{ resultCount }} records found</div>
             </div>
             <div class="tab-content-four">
-              <div class="content-four-top">表格</div>
-              <div class="content-four-bottom">按钮</div>
+              <div class="content-four-top">
+                <ngx-datatable
+                  style="width: 100%;height:100%;"
+                  class="material"
+                  [rows]="rows"
+                  [headerHeight]="40"
+                  [footerHeight]="0"
+                  [rowHeight]="40"
+                  [limit]="3"
+                  [selected]="selected"
+                  [selectAllRowsOnPage]="false"
+                  [selectionType]="SelectionType.checkbox"
+                  [columnMode]="ColumnMode.force"
+                  [displayCheck]="displayCheck"
+                  (activate)="onActivate($event)"
+                  (select)="onSelect($event)"
+                  [summaryRow]="false"
+                  [scrollbarH]="true"
+                  [scrollbarV]="true"
+                >
+                  <ngx-datatable-column
+                    [width]="40"
+                    [headerCheckboxable]="true"
+                    [canAutoResize]="false"
+                    [resizeable]="false"
+                    [checkboxable]="true"
+                  >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="UserName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PartnerID"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FormYear"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FormType"></ngx-datatable-column>
+                  <ngx-datatable-column prop="UserFormId"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PayerName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RecipientName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FilingFee"></ngx-datatable-column>
+                  <ngx-datatable-column prop="InvoiceId"></ngx-datatable-column>
+                  <ngx-datatable-column prop="IsDeleted"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FormStatus"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PrintStatus"></ngx-datatable-column>
+                  <ngx-datatable-column prop="TransmittalStatus"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EFileName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="AgencyFileName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EFileDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EfileEmailSent"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EfileEmaiDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RMailedOut"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RMailedOutEmailed"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RMailDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="ERejectEmailSent"></ngx-datatable-column>
+                  <ngx-datatable-column prop="ERejectEmailDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RcptEFileEmailSent"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RcptEFileEmailDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PFileName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EFileApprovedDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="Operation"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PreviousOperation"></ngx-datatable-column>
+                  <ngx-datatable-column prop="ServiceId"></ngx-datatable-column>
+                  <ngx-datatable-column prop="CouponNumber"></ngx-datatable-column>
+                  <ngx-datatable-column prop="SourceCode"></ngx-datatable-column>
+                  <ngx-datatable-column prop="OriginalFilename"></ngx-datatable-column>
+                  <ngx-datatable-column prop="OriginName"></ngx-datatable-column>
+                </ngx-datatable>
+              </div>
+              <div class="content-four-bottom">
+                <label id="labelBottom">Batch size</label>
+                <input class="inputNum" type="number" name="points" min="0" id="inputBottom"/>
+                <div class="btn-group" dropdown id="otherDropdown">
+                  <button id="button-basic" dropdownToggle type="button" class="btn folder dropdown-toggle" aria-controls="dropdown-basic">
+                    Generate Print Files <span class="caret"></span>
+                  </button>
+                  <ul id="dropdown-basic-bottom" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                    <ng-container *ngFor="let actG of actGroup">
+                      <li role="menuitem"><a class="dropdown-item">{{ actG?.content }}</a></li>
+                    </ng-container>
+                  </ul>
+                </div>
+                <button type="button" class="btn middle" id="submitBtn" (click)="submitData()">Submit</button>
+              </div>
             </div>
           </tab>
-          <tab heading="New Query 2*" class="new-tab" id="NewQuery2" (selectTab)="changeRoute()" *ngIf="tab2ShowState">
-
-          </tab>
-          <tab heading="View ORF Files" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="vofShowState">
-            
-          </tab>
-          <tab heading="Submit Batches" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="sbShowState">
-            
-          </tab>
-          <tab heading="Accept Batches" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="abShowState">
-            
-          </tab>
-          <tab heading="Reject Batches" class="new-tab" id="ViewORFFiles" (selectTab)="changeRoute()" *ngIf="rbShowState">
-            
-          </tab>
+          <ng-container *ngFor="let tabz of tabs">
+            <tab 
+              class="new-tab"
+              [heading]="tabz.title"
+              [active]="tabz.active"
+              (selectTab)="tabz.active = true"  
+              [removable]="tabz.removable"      
+              [disabled]="tabz.disabled"
+              *ngIf="tabz.showState"
+              >
+              <ng-container *ngIf="tabz.cate == 'query'">
+                <div class="tab-content-one">
+                  <p style="font-weight: bold;margin-left:10px;">{{ tabz.title }}</p>
+                </div>
+                <div class="tab-content-two">
+                  <div class="content-two-top">
+                    <div class="content-two-top-top">
+                      <div class="btn-group" dropdown>
+                        <button id="button-basic-small" dropdownToggle type="button" class="btn dropdown-toggle"
+                          aria-controls="dropdown-basic">
+                        </button>
+                        <ul id="dropdown-basic-small" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-basic">
+                          <li role="menuitem"><a class="dropdown-item" href="javascript:void(0)" (click)="addNewCon()">Add new condition</a></li>
+                          <li role="menuitem"><a class="dropdown-item" href="#">Open a new bracket</a></li>
+                        </ul>
+                      </div>
+                      <div style="margin-left:10px;">
+                        <span>Select records where </span>
+                        <span dropdown container="body">
+                          <a href id="basic-link" dropdownToggle (click)="false"
+                             aria-controls="basic-link-dropdown" style="text-decoration: underline;">{{ allState }}</a>
+                          <ul id="basic-link-dropdown-all" *dropdownMenu class="dropdown-menu"
+                              role="menu" aria-labelledby="basic-link">
+                            <li *ngFor="let choice of allItems">
+                              <a class="dropdown-item" href="javascript:void(0)" (click)="changeAllState(choice)">{{choice}}</a>
+                            </li>
+                          </ul>
+                        </span>
+                        <span> of the following succeed</span>
+                      </div>
+                    </div>
+                    <div class="content-two-top-content" *ngFor="let coni of conditionItems">
+                      <div class="condition">
+                        <input class="isConditionCheckbox" type="checkbox" id="isConditionCheck" name="isConditionCheck"
+                        (change)="isConditionCheck">
+                        <div class="btn-group" dropdown container="body">
+                          <button id="button-basic-num-small" dropdownToggle type="button"
+                            aria-controls="dropdown-basic"><p style="margin:-5px 3px 10px -2px;font-size:12px;">{{ coni.no }}</p>
+                          </button>
+                          <ul id="dropdown-basic-small-no" *dropdownMenu class="dropdown-menu"
+                              role="menu" aria-labelledby="button-basic">
+                            <li role="menuitem"><a class="dropdown-item" href="#">Add new condition</a></li>
+                            <li role="menuitem"><a class="dropdown-item" href="#">Open a new bracket</a></li>
+                            <li role="menuitem"><a class="dropdown-item" href="#">Delete(including all sub-conditions)</a></li>
+                            <li role="menuitem"><a class="dropdown-item" href="#">Move up</a></li>
+                            <li role="menuitem"><a class="dropdown-item" href="#">Move down</a></li>
+                          </ul>
+                        </div>
+                        <span dropdown container="body">
+                          <div class="btn-group" dropdown [autoClose]="true" container="body">
+                            <a href id="basic-link" dropdownToggle (click)="false" style="text-decoration: underline;"
+                                    aria-controls="dropdown-nested">
+                                    {{ coni.condition1 }}&nbsp;&nbsp;
+                            </a>
+                            <ul id="dropdown-nested" *dropdownMenu class="dropdown-menu"
+                                role="menu" aria-labelledby="button-nested">
+                              <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body" *ngFor="let choice of clickItems">
+                                <a dropdownToggle class="dropdown-item dropdown-toggle"
+                                   (click)="false">{{choice.level1}}<span class="caret"></span></a>
+                                <ul *dropdownMenu class="dropdown-menu" role="menu">
+                                  <li role="menuitem"  *ngFor="let next of choice.level2"><a class="dropdown-item" href="javascript:void(0)" (click)="changeCondition1(coni.no,choice.level1,next)">{{ next }}</a></li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </div>
+                        </span>
+                        <span dropdown container="body" style="margin-top:2px;">
+                          <a href id="basic-link" dropdownToggle (click)="false"
+                             aria-controls="basic-link-dropdown" style="text-decoration: underline;">{{ coni.condition2 }}&nbsp;&nbsp;</a>
+                          <ul id="basic-link-dropdown-con2" *dropdownMenu class="dropdown-menu"
+                              role="menu" aria-labelledby="basic-link">
+                            <li *ngFor="let choice of con2Items">
+                              <a class="dropdown-item" href="javascript:void(0)" (click)="changeStartsWithState(coni.no,choice)">{{choice}}</a>
+                            </li>
+                          </ul>
+                        </span>
+                        <input id="clickhere1" name="clickhere" class="clickhere"  style="text-decoration: underline;" value="[click here]" (ngModel)="clickhere" />
+                      </div>
+                    </div>
+                    <div class="content-two-top-bottom">
+                      <div class="btn-group" dropdown [autoClose]="true" container="body">
+                        <a href id="basic-link" dropdownToggle (click)="false"
+                                aria-controls="dropdown-nested">
+                                [Click here to add a new condition]
+                        </a>
+                        <ul id="dropdown-nested" *dropdownMenu class="dropdown-menu"
+                            role="menu" aria-labelledby="button-nested">
+                          <li role="menuitem" dropdown triggers="mouseover" placement="right" container="body" *ngFor="let choice of clickItems">
+                            <a dropdownToggle class="dropdown-item dropdown-toggle"
+                               (click)="false">{{choice.level1}}<span class="caret"></span></a>
+                            <ul *dropdownMenu class="dropdown-menu" role="menu">
+                              <li role="menuitem"  *ngFor="let next of choice.level2"><a class="dropdown-item" href="javascript:void(0)" (click)="changeClickAddNewCon(choice.level1,next)">{{ next }}</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+    
+                    </div>
+                  </div>
+                  <div class="content-two-bottom">
+                    <div class="saveChange" *ngIf="saveShow">
+                      <a href="javascript:void(0)" (click)="saveQuery(template)">
+                        <p style="text-decoration: underline;">Save Query</p>
+                      </a>
+                    </div>
+                    <div class="editChange" *ngIf="editShow">
+                      <a href="javascript:void(0)" (click)="updateQuery(template)">
+                        <p style="text-decoration: underline;">Update Query</p>
+                      </a>
+                      <a href="javascript:void(0)" (click)="deleteQuery(template)">
+                        <p style="text-decoration: underline;">Delete Query</p>
+                      </a>
+                    </div>
+                    <div style="float:right">
+                      <button type="button" class="btn middle" id="refreshBtn" (click)="refreshTable()">Refresh</button>
+                      <input class="isPrintCheckbox" type="checkbox" id="isPrint" name="isPrint"
+                        (change)="isPrintCheck">
+                      <label class="iPlabel" for="isPrint"><span>Is Print Only</span></label>
+                      <input class="inputNum" type="number" name="points" min="0" />
+                      <button type="button" class="btn middle" id="outputBtn" (click)="outputTable()">Output</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-content-three">
+                  <p style="font-weight: bold;margin-left:10px;">Results</p>
+                  <div class="resultCount" *ngIf="resultCountShowState">{{ resultCount }} records found</div>
+                </div>
+                <div class="tab-content-four">
+                  <div class="content-four-top">
+                    <ngx-datatable
+                  style="width: 100%;height:100%;"
+                  class="material"
+                  [rows]="rows"
+                  [headerHeight]="40"
+                  [footerHeight]="0"
+                  [rowHeight]="40"
+                  [limit]="3"
+                  [selected]="selected"
+                  [selectAllRowsOnPage]="false"
+                  [selectionType]="SelectionType.checkbox"
+                  [columnMode]="ColumnMode.force"
+                  [displayCheck]="displayCheck"
+                  (activate)="onActivate($event)"
+                  (select)="onSelect($event)"
+                  [summaryRow]="false"
+                  [scrollbarH]="true"
+                  [scrollbarV]="true"
+                >
+                  <ngx-datatable-column
+                    [width]="40"
+                    [headerCheckboxable]="true"
+                    [canAutoResize]="false"
+                    [resizeable]="false"
+                    [checkboxable]="true"
+                  >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="UserName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PartnerID"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FormYear"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FormType"></ngx-datatable-column>
+                  <ngx-datatable-column prop="UserFormId"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PayerName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RecipientName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FilingFee"></ngx-datatable-column>
+                  <ngx-datatable-column prop="InvoiceId"></ngx-datatable-column>
+                  <ngx-datatable-column prop="IsDeleted"></ngx-datatable-column>
+                  <ngx-datatable-column prop="FormStatus"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PrintStatus"></ngx-datatable-column>
+                  <ngx-datatable-column prop="TransmittalStatus"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EFileName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="AgencyFileName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EFileDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EfileEmailSent"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EfileEmaiDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RMailedOut"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RMailedOutEmailed"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RMailDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="ERejectEmailSent"></ngx-datatable-column>
+                  <ngx-datatable-column prop="ERejectEmailDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RcptEFileEmailSent"></ngx-datatable-column>
+                  <ngx-datatable-column prop="RcptEFileEmailDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PFileName"></ngx-datatable-column>
+                  <ngx-datatable-column prop="EFileApprovedDate"></ngx-datatable-column>
+                  <ngx-datatable-column prop="Operation"></ngx-datatable-column>
+                  <ngx-datatable-column prop="PreviousOperation"></ngx-datatable-column>
+                  <ngx-datatable-column prop="ServiceId"></ngx-datatable-column>
+                  <ngx-datatable-column prop="CouponNumber"></ngx-datatable-column>
+                  <ngx-datatable-column prop="SourceCode"></ngx-datatable-column>
+                  <ngx-datatable-column prop="OriginalFilename"></ngx-datatable-column>
+                  <ngx-datatable-column prop="OriginName"></ngx-datatable-column>
+                    </ngx-datatable>
+                  </div>
+                  <div class="content-four-bottom">
+                    <label id="labelBottom">Batch size</label>
+                    <input class="inputNum" type="number" name="points" min="0" id="inputBottom"/>
+                    <div class="btn-group" dropdown id="otherDropdown">
+                      <button id="button-basic" dropdownToggle type="button" class="btn folder dropdown-toggle" aria-controls="dropdown-basic">
+                        Generate Print Files <span class="caret"></span>
+                      </button>
+                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                        <ng-container *ngFor="let actG of actGroup">
+                          <li role="menuitem"><a class="dropdown-item">{{ actG?.content }}</a></li>
+                        </ng-container>
+                      </ul>
+                    </div>
+                    <button type="button" class="btn middle" id="submitBtn" (click)="submitData()">Submit</button>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="tabz.cate == 'vof'">
+                <div class="notQueryContentTop">
+                  <button type="button" class="btn middle" id="refreshVOFBtn" (click)="refreshVOFData()">Refresh</button>
+                  <label id="labelBottom">Processing Date</label>
+                  <div class="form-group">
+                    <input type="text"
+                      placeholder="Datepicker"
+                      class="form-control"
+                      bsDatepicker>
+                  </div>
+                  <button type="button" class="btn middle" id="importORFBtn" (click)="importSelectORF()">Import Selected ORF(s)</button>
+                </div>
+                <div class="notQueryContentBottom">
+                  <ngx-datatable
+                      style="width: 100%;height:100%;"
+                      class="material"
+                      [rows]="rows"
+                      [headerHeight]="40"
+                      [footerHeight]="0"
+                      [rowHeight]="40"
+                      [limit]="3"
+                      [selected]="selected"
+                      [selectAllRowsOnPage]="false"
+                      [selectionType]="SelectionType.checkbox"
+                      [columnMode]="ColumnMode.force"
+                      [displayCheck]="displayCheck"
+                      (activate)="onActivate($event)"
+                      (select)="onSelect($event)"
+                      [summaryRow]="false"
+                      [scrollbarH]="true"
+                      [scrollbarV]="true"
+                    >
+                      <ngx-datatable-column
+                        [width]="40"
+                        [headerCheckboxable]="true"
+                        [canAutoResize]="false"
+                        [resizeable]="false"
+                        [checkboxable]="true"
+                      >
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Name"></ngx-datatable-column>
+                      <ngx-datatable-column name="Date modified"></ngx-datatable-column>
+                      <ngx-datatable-column name="Size"></ngx-datatable-column>
+                      <ngx-datatable-column name=""></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="tabz.cate == 'sb'">
+                <div class="notQueryContentTop">
+                  <button type="button" class="btn middle" id="refreshSBBtn" (click)="refreshSBData()">Refresh</button>
+                  <label id="labelBottom">Batch Submit Date</label>
+                  <div class="form-group">
+                    <input type="text"
+                      placeholder="Datepicker"
+                      class="form-control"
+                      bsDatepicker>
+                  </div>
+                  <button type="button" class="btn middle" id="sbsubmit" (click)="sbsubmit()">Submit</button>
+                </div>
+                <div class="notQueryContentBottom">
+                  <ngx-datatable
+                      style="width: 100%;height:100%;"
+                      class="material"
+                      [rows]="rows"
+                      [headerHeight]="40"
+                      [footerHeight]="0"
+                      [rowHeight]="40"
+                      [limit]="3"
+                      [selected]="selected"
+                      [selectAllRowsOnPage]="false"
+                      [selectionType]="SelectionType.checkbox"
+                      [columnMode]="ColumnMode.force"
+                      [displayCheck]="displayCheck"
+                      (activate)="onActivate($event)"
+                      (select)="onSelect($event)"
+                      [summaryRow]="false"
+                      [scrollbarH]="true"
+                      [scrollbarV]="true"
+                    >
+                      <ngx-datatable-column
+                        [width]="40"
+                        [headerCheckboxable]="true"
+                        [canAutoResize]="false"
+                        [resizeable]="false"
+                        [checkboxable]="true"
+                      >
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Agency File Name"></ngx-datatable-column>
+                      <ngx-datatable-column name="Efile Batch Name"></ngx-datatable-column>
+                      <ngx-datatable-column name="Form Type"></ngx-datatable-column>
+                      <ngx-datatable-column name="State"></ngx-datatable-column>
+                      <ngx-datatable-column name="Batch Create Date"></ngx-datatable-column>
+                      <ngx-datatable-column name="# of records"></ngx-datatable-column>
+                      <ngx-datatable-column name="Year"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="tabz.cate == 'vb'">
+                <div class="notQueryContentTop">
+                  <button type="button" class="btn middle" id="refreshABBtn" (click)="refreshABData()">Refresh</button>
+                  <label id="labelBottom">Batch Accept Date</label>
+                  <div class="form-group">
+                    <input type="text"
+                      placeholder="Datepicker"
+                      class="form-control"
+                      bsDatepicker>
+                  </div>
+                  <button type="button" class="btn middle" id="abAcceptBtn" (click)="abAccept()">Accept</button>
+                </div>
+                <div class="notQueryContentBottom">
+                  <ngx-datatable
+                      style="width: 100%;height:100%;"
+                      class="material"
+                      [rows]="rows"
+                      [headerHeight]="40"
+                      [footerHeight]="0"
+                      [rowHeight]="40"
+                      [limit]="3"
+                      [selected]="selected"
+                      [selectAllRowsOnPage]="false"
+                      [selectionType]="SelectionType.checkbox"
+                      [columnMode]="ColumnMode.force"
+                      [displayCheck]="displayCheck"
+                      (activate)="onActivate($event)"
+                      (select)="onSelect($event)"
+                      [summaryRow]="false"
+                      [scrollbarH]="true"
+                      [scrollbarV]="true"
+                    >
+                      <ngx-datatable-column
+                        [width]="40"
+                        [headerCheckboxable]="true"
+                        [canAutoResize]="false"
+                        [resizeable]="false"
+                        [checkboxable]="true"
+                      >
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Agency File Name"></ngx-datatable-column>
+                      <ngx-datatable-column name="Efile Batch Name"></ngx-datatable-column>
+                      <ngx-datatable-column name="Form Type"></ngx-datatable-column>
+                      <ngx-datatable-column name="State"></ngx-datatable-column>
+                      <ngx-datatable-column name="Batch Create Date"></ngx-datatable-column>
+                      <ngx-datatable-column name="E-filed On"></ngx-datatable-column>
+                      <ngx-datatable-column name="# of records"></ngx-datatable-column>
+                      <ngx-datatable-column name="Year"></ngx-datatable-column>
+                      <ngx-datatable-column name=""></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="tabz.cate == 'rb'">
+                <div class="notQueryContentTop">
+                  <button type="button" class="btn middle" id="refreshRBBtn" (click)="refreshRBData()">Reject</button>
+                  <label id="labelBottom">Batch Reject Date</label>
+                  <div class="form-group">
+                    <input type="text"
+                      placeholder="Datepicker"
+                      class="form-control"
+                      bsDatepicker>
+                  </div>
+                  <button type="button" class="btn middle" id="rbRejectBtn" (click)="rbReject()">Reject</button>
+                </div>
+                <div class="notQueryContentBottom">
+                  <ngx-datatable
+                      style="width: 100%;height:100%;"
+                      class="material"
+                      [rows]="rows"
+                      [headerHeight]="40"
+                      [footerHeight]="0"
+                      [rowHeight]="40"
+                      [limit]="3"
+                      [selected]="selected"
+                      [selectAllRowsOnPage]="false"
+                      [selectionType]="SelectionType.checkbox"
+                      [columnMode]="ColumnMode.force"
+                      [displayCheck]="displayCheck"
+                      (activate)="onActivate($event)"
+                      (select)="onSelect($event)"
+                      [summaryRow]="false"
+                      [scrollbarH]="true"
+                      [scrollbarV]="true"
+                    >
+                      <ngx-datatable-column
+                        [width]="40"
+                        [headerCheckboxable]="true"
+                        [canAutoResize]="false"
+                        [resizeable]="false"
+                        [checkboxable]="true"
+                      >
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="User Form Id"></ngx-datatable-column>
+                      <ngx-datatable-column name="Agency File Name"></ngx-datatable-column>
+                      <ngx-datatable-column name="Efile Batch Name"></ngx-datatable-column>
+                      <ngx-datatable-column name="Form Type"></ngx-datatable-column>
+                      <ngx-datatable-column name="State"></ngx-datatable-column>
+                      <ngx-datatable-column name="Batch Create Date"></ngx-datatable-column>
+                      <ngx-datatable-column name="E-filed On"></ngx-datatable-column>
+                      <ngx-datatable-column name="Year"></ngx-datatable-column>
+                      <ngx-datatable-column name=""></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+              </ng-container>
+            </tab>
+          </ng-container>
         </tabset>
+      </div>
+    </div>
+    <div class="Grid-cell" id="set" *ngIf="setShowState">
+      <div class="appSet" *ngIf="appsetShowState">
+        <form (ngSubmit)="submitForm()">
+          <div class="form-top">
+            <div class="form-label">Company Name</div>
+            <input id="companyName" name="companyName" type="text" class="form-input" value="{{companyName}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">Application Name</div>
+            <input id="applicationName" name="applicationName" type="text" class="form-input" value="{{applicationName}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">Application Path</div>
+            <input id="applicationPath" name="applicationPath" type="text" class="form-input" value="{{applicationPath}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">PFilePath</div>
+            <input id="pfilePath" name="pfilePath" type="text" class="form-input" value="{{pfilePath}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">ORFile Path</div>
+            <input id="orfilePath" name="orfilePath" type="text" class="form-input" value="{{orfilePath}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">PFile No</div>
+            <input id="pfileNo" name="pfileNo" type="text" class="form-input" value="{{pfileNo}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">Print Type</div>
+            <input id="printType" name="printType" type="text" class="form-input" value="{{printType}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">Batch Size</div>
+            <input id="batchSize" name="batchSize" type="text" class="form-input" value="{{batchSize}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">Batch File No</div>
+            <input id="batchFileNo" name="batchFileNo" type="text" class="form-input" value="{{batchFileNo}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">EFilePath</div>
+            <input id="efilePath" name="efilePath" type="text" class="form-input" value="{{efilePath}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">Last Updated By</div>
+            <input id="lastUpdatedBy" name="lastUpdatedBy" type="text" class="form-input" value="{{lastUpdatedBy}}" />
+          </div>
+          <div class="form-top">
+            <div class="form-label">Last Updated</div>
+            <input id="lastUpdated" name="lastUpdated" type="text" class="form-input" value="{{lastUpdated}}" />
+          </div>
+        
+          <div class="form-buttons">
+            <div class="left">
+              <button type="button" class="btn middle" (click)="saveTranSet()"><span>OK</span></button>
+            </div>
+            <div class="right">
+              <button type="button" class="btn middle" (click)="resetTranSet()"><span>Cancel</span></button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="tranSet" *ngIf="transetShowState">
+        <form (ngSubmit)="submitForm()">
+          <div class="setLeft">
+            <div class="form-top">
+              <div class="form-label">Transmitter Name</div>
+              <input id="transmittername" name="transmittername" type="text" class="form-input" value="{{transmitterName}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Transmitter Name2</div>
+              <input id="transmitterName2" name="transmitterName2" type="text" class="form-input" value="{{transmitterName2}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Company Name</div>
+              <input id="companyName2" name="companyName2" type="text" class="form-input" value="{{companyName2}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Contact Phone</div>
+              <input id="contactPhone" name="contactPhone" type="text" class="form-input" value="{{contactPhone}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Ext.</div>
+              <input id="ext" name="ext" type="text" class="form-input" value="{{ext}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Contact Email</div>
+              <input id="contactEmail" name="contactEmail" type="text" class="form-input" value="{{contactEmail}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Address</div>
+              <input id="address" name="address" type="text" class="form-input" value="{{address}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Address 2(Suite)</div>
+              <input id="address2" name="address2" type="text" class="form-input" value="{{address2}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">City</div>
+              <input id="city" name="city" type="text" class="form-input" value="{{city}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">State</div>
+              <input id="state" name="state" type="text" class="form-input" value="{{state}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Zip</div>
+              <input id="zip" name="zip" type="text" class="form-input" value="{{zip}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">TIN #</div>
+              <input id="tin" name="tin" type="text" class="form-input" value="{{tin}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">TCC #</div>
+              <input id="tcc" name="tcc" type="text" class="form-input" value="{{tcc}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">TCC # for 1042-S</div>
+              <input id="tccFor1042s" name="tccFor1042s" type="text" class="form-input" value="{{tccFor1042s}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">TCC # for ACA</div>
+              <input id="tccforACA" name="tccforACA" type="text" class="form-input" value="{{tccforACA}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Software ID for 1094/1095B</div>
+              <input id="softwareIDfor109495B" name="softwareIDfor109495B" type="text" class="form-input" value="{{softwareIDfor109495B}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Software ID for 1094/1095C</div>
+              <input id="softwareIDfor109495C" name="softwareIDfor109495C" type="text" class="form-input" value="{{softwareIDfor109495C}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Current Year</div>
+              <input id="currentYear" name="currentYear" type="text" class="form-input" value="{{currentYear}}" />
+            </div>
+          </div>
+
+          <!-- -->
+          <div class="setRight">
+            <div class="form-top">
+              <div class="form-label">Test Mode</div>
+              <input id="testMode" name="testMode" type="text" class="form-input" value="{{testMode}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Combined Filing</div>
+              <input id="combinedFiling" name="combinedFiling" type="text" class="form-input" value="{{combinedFiling}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">SSA UserID</div>
+              <input id="ssaUserID" name="ssaUserID" type="text" class="form-input" value="{{ssaUserID}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Contact Person Name</div>
+              <input id="contactPersonName" name="contactPersonName" type="text" class="form-input" value="{{contactPersonName}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Contact Person Title</div>
+              <input id="contactPersonTitle" name="contactPersonTitle" type="text" class="form-input" value="{{contactPersonTitle}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Contact Person Tel No.</div>
+              <input id="contactPersonTelNo" name="contactPersonTelNo" type="text" class="form-input" value="{{contactPersonTelNo}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Last Updated By</div>
+              <input id="lastUpdatedBy2" name="lastUpdatedBy2" type="text" class="form-input" value="{{lastUpdatedBy2}}" />
+            </div>
+            <div class="form-top">
+              <div class="form-label">Last Updated</div>
+              <input id="lastUpdated2" name="lastUpdated2" type="text" class="form-input" value="{{lastUpdated2}}" />
+            </div>
+          
+            <div class="form-buttons">
+              <div class="left">
+                <button type="button" class="btn middle" (click)="saveTranSet()"><span>OK</span></button>
+              </div>
+              <div class="right">
+                <button type="button" class="btn middle" (click)="resetTranSet()"><span>Cancel</span></button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -74,5 +930,37 @@
   </footer>
 
 </div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <p class="modal-title pull-left">SAVE QUERY AS</p>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label for="queryName">Name</label>
+    <input id="queryName" name="queryName" class="queryName" (ngModel)="queryname" />
+
+    <label for="queryName">Folder</label>
+    <div class="btn-group" dropdown>
+      <button id="button-basic" dropdownToggle type="button" class="btn folder dropdown-toggle" aria-controls="dropdown-basic">
+        My Queries <span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+        <ng-container *ngFor="let queryG of queryGroup">
+          <li role="menuitem"><a class="dropdown-item">{{ queryG?.content }}</a></li>
+        </ng-container>
+      </ul>
+    </div>
+    
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn middle" id="confirmBtn" (click)="modalRef.hide()">OK</button>
+    <button type="button" class="btn middle" id="cancelBtn" (click)="modalRef.hide()">Cancel</button>
+  </div>
+  
+</ng-template>
+
 
 <router-outlet></router-outlet>
